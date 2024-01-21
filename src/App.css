@@ -23,3 +23,35 @@
     animation: logo-spin infinite 20s linear;
   }
 }
+
+
+.photoAttachContainer{
+  position: relative;
+}
+
+.upload-file-container{
+  position: relative;
+  height: 40px;
+  width: 20%;
+}
+
+form{
+  display: flex;
+  max-width: 100%;
+  gap: 10px;
+  justify-content: center;
+}
+:is(.upload-file-container) 
+  [type=file], button{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: inherit;
+  cursor: pointer;
+}
+
+:is(.upload-file-container) input[type=file]{
+  z-index: 10;
+  opacity: 0;
+}

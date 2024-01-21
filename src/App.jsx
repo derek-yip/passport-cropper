@@ -1,7 +1,7 @@
 import Logo from "/logo.svg";
 import "./App.css";
 import { useRef, useState } from "react";
-import './components/photoDropArea/index.css'
+import "./components/photoDropArea/index.css";
 
 function App() {
   const dropAreaRef = useRef(null);
@@ -10,7 +10,7 @@ function App() {
 
   const handleDragOver = (event) => {
     event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
+    event.dataTransfer.dropEffect = "copy";
   };
 
   const handleDrop = (event) => {
@@ -46,28 +46,33 @@ function App() {
       <h1>Passport Cropper</h1>
 
       <div className="photoAttachContainer">
-        <div>
-          <div
-            ref={dropAreaRef}
-            className="drop-area"
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          >
+        <div
+          ref={dropAreaRef}
+          className="drop-area"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <div className="img-container">
             {imageSrc ? (
-              <img src={imageSrc} alt="Uploaded" width="300" height="200" />
+              <img src={imageSrc} alt="Uploaded" />
             ) : (
-              <h2>Drop an image here to upload</h2>
+              <h2>Drop / Click to UPLOAD an image here !</h2>
             )}
           </div>
-
-          <form style={{ display: "none" }}>
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileInputChange}
-            />
-            <input type="submit" value="Upload" />
-          </form>
+          <div className="form-container">
+            <form>
+              <div className="upload-file-container">
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  onChange={handleFileInputChange}
+                />
+                <button className="form-upload">Upload</button>
+              </div>
+              <input type="submit" value="Confirm" />
+            </form>
+          </div>
         </div>
       </div>
     </>
