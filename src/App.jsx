@@ -1,21 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import "./components/cropper/cropper.css";
+
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 const CropperComponent = () => {
+  const fileInputRef = useRef(null);
   const [image, setImage] = useState(null);
-  const [imageSize, setImageSize] = useState({ height: 0, width: 0 });
-
-  const [cropperPosistion, setCropperPosition] = useState({ x: 0, y: 0 });
-
-  const [cropData, setCropData] = useState(null);
-  const [crop, setCrop] = useState(false);
-
-  const [dragMode, setDragMode] = useState("none");
 
   const cropperRef = useRef(null);
-  const fileInputRef = useRef(null);
+  const [cropperPosistion, setCropperPosition] = useState({ top: 0, left: 0 });
+  const [dragMode, setDragMode] = useState("none");
+  const [crop, setCrop] = useState(false);
+  const [cropData, setCropData] = useState(null);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -50,19 +49,38 @@ const CropperComponent = () => {
 
   const onCropperMove = () => {
     const cropper = cropperRef.current?.cropper;
-    const cropperPosistion = cropper.getData();
-    setCropperPosition({ x: cropperPosistion.x, y: cropperPosistion.y });
-    console.log(croppedCanvas);
+    const cropperPosistion = cropper.getCropBoxData();
+    // console.log(cropper.getCropBoxData().top,cropper.getCropBoxData().left);
+    if (cropperPosistion.top >= 0 && cropperPosistion.left >= 0) {
+      setCropperPosition({
+        top: Math.floor(cropperPosistion.top),
+        left: Math.floor(cropperPosistion.left),
+      });
+    }
+  };
+
+  const setDefaultCropper = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      const cropperPosistion = cropper.getCropBoxData();
+      console.log(cropper,{
+        top: Math.floor(cropperPosistion.top),
+        left: Math.floor(cropperPosistion.left),
+      });
+      
+    }
+    // if (cropperPosistion.top >= 0 && cropperPosistion.left >= 0) {
+    //   setCropperPosition({
+    //     top: Math.floor(cropperPosistion.top),
+    //     left: Math.floor(cropperPosistion.left),
+    //   });
+    // }
   };
 
   const handleCrop = () => {
     setCrop(true);
     const cropper = cropperRef.current?.cropper;
     const croppedCanvas = cropper.getCroppedCanvas();
-    setImageSize({
-      height: Math.floor(croppedCanvas.height),
-      width: Math.floor(croppedCanvas.width),
-    });
     setCropData(croppedCanvas.toDataURL());
   };
 
@@ -89,11 +107,10 @@ const CropperComponent = () => {
       <div
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        // onClick={handleOpenFileInput}
         style={{
+          position: "relative",
           minHeight: "20rem",
           height: "40rem",
-          padding: "20px",
           border: "2px dashed #ccc",
           display: "flex",
           justifyContent: "center",
@@ -101,42 +118,41 @@ const CropperComponent = () => {
           // cursor: "pointer",
         }}
       >
-        {!image && <span>Drag and drop an image here or click to browse</span>}
+        {!image && <h2>Drag and Drop an image here or click to browse</h2>}
         {image && (
-          <>
+          <div className="cropper-container">
             <Cropper
+              className="cropper"
               ref={cropperRef}
               src={image}
-              style={{ maxHeight: "100%" }}
+              onInitialized={handleCropperLoaded}
               initialAspectRatio={4 / 5}
               dragMode={dragMode}
-              scalable={false}
-              movable={false}
-              crop={crop}
+              zoomOnWheel={false}
+              background={false}
               guides={true}
               cropBoxResizable={false}
-              zoomOnWheel={false}
-              onMouseOver={onCropperMove}
+              // cropstart={setDefaultCropper}
+              cropmove={onCropperMove}
+              crop={crop}
             />
-            {crop && (
+            {image && (
               <div
+                className="cropper-button-container"
                 style={{
-                  position: "absolute",
-                  top: `${cropperPosistion.y}px`,
-                  right: `${cropperPosistion.x}px`,
-                  display: "flex",
-                  alignItems: "flex-end",
+                  top: `${cropperPosistion.top}px`,
+                  left: `${cropperPosistion.left}px`,
                 }}
               >
-                <button onClick={handleCrop} style={{ marginRight: "10px" }}>
+                <button className="crop-tick-button" onClick={handleCrop}>
                   <FaCheck />
                 </button>
-                <button onClick={handleReset}>
+                <button className="crop-cross-button" onClick={handleReset}>
                   <FaTimes />
                 </button>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
 

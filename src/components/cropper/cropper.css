@@ -1,0 +1,39 @@
+.cropper-container {
+  position: relative;
+  height: 100%;
+}
+
+.cropper {
+  max-height: 100%;
+}
+
+.cropper-button-container {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+}
+
+:is(.cropper-button-container) button {
+  color: rgb(42, 42, 42);
+  width: 60px;
+  height: 40px;
+  transition: none;
+}
+
+:is(.cropper-button-container) button:active {
+    border: 1px solid transparent;
+}
+
+:is(.cropper-button-container) svg {
+  width: 40%;
+  height: 40%;
+}
+
+.crop-tick-button {
+  background-color: lightgreen;
+  margin-right: 10px;
+}
+
+.crop-cross-button {
+  background-color: lightcoral;
+}
