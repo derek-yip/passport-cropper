@@ -7,10 +7,15 @@
   max-height: 100%;
 }
 
+.cropper-reverse {
+  transform: rotateY(180deg);
+}
+
 .cropper-button-container {
   position: absolute;
   display: flex;
   align-items: flex-end;
+  gap: 5px;
 }
 
 :is(.cropper-button-container) button {
@@ -21,7 +26,7 @@
 }
 
 :is(.cropper-button-container) button:active {
-    border: 1px solid transparent;
+  border: 1px solid transparent;
 }
 
 :is(.cropper-button-container) svg {
@@ -29,11 +34,27 @@
   height: 40%;
 }
 
-.crop-tick-button {
+.crop-crop-button {
   background-color: lightgreen;
-  margin-right: 10px;
 }
 
-.crop-cross-button {
+.crop-trash-button {
   background-color: lightcoral;
+}
+
+.crop-rotate-left-button {
+  transform: rotateY(180deg);
+  background-color: antiquewhite;
+}
+
+.crop-rotate-right-button {
+  background-color: cornsilk;
+}
+
+.crop-rotate-reset-button {
+  background-color: lightseagreen;
+}
+
+.crop-rotate-reverse-button {
+  background-color: paleturquoise;
 }

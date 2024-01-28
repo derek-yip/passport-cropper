@@ -1,10 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import "./components/cropper/cropper.css";
 
-import { FaCheck, FaTimes } from "react-icons/fa";
+import {
+  FaCropAlt,
+  FaTrashAlt,
+  FaRedo,
+  FaSync,
+  FaYandex,
+} from "react-icons/fa";
 
 const CropperComponent = () => {
   const fileInputRef = useRef(null);
@@ -18,7 +24,8 @@ const CropperComponent = () => {
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
   const [cropData, setCropData] = useState(null);
-
+  const [rotateDegree, setRotateDegree] = useState(0);
+  const [toggleFlip, setToggleFlip] = useState(false);
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -56,8 +63,11 @@ const CropperComponent = () => {
     if (cropperPosistion.top >= 0 && cropperPosistion.left >= 0) {
       setCropperPosition({
         top: Math.floor(cropperPosistion.top),
-        left: Math.floor(cropperPosistion.left),
+        left: toggleFlip
+          ? Math.abs(Math.floor(cropperPosistion.left))
+          : Math.floor(cropperPosistion.left),
       });
+      console.log(cropperPosistion);
     }
   };
 
@@ -75,14 +85,64 @@ const CropperComponent = () => {
   const handleCrop = () => {
     setCrop(true);
     const cropper = cropperRef.current?.cropper;
-    const croppedCanvas = cropper.getCroppedCanvas();
+    var croppedCanvas = cropper.getCroppedCanvas();
+
+    croppedCanvas = toggleFlip
+      ? horizontalFlipCanvas(croppedCanvas)
+      : croppedCanvas;
+
     setCropData(croppedCanvas.toDataURL());
+  };
+
+  const horizontalFlipCanvas = (canvas) => {
+    const flippedCanvas = document.createElement("canvas");
+    const flippedContext = flippedCanvas.getContext("2d");
+
+    flippedCanvas.width = canvas.width;
+    flippedCanvas.height = canvas.height;
+
+    flippedContext.translate(flippedCanvas.width, 0);
+    flippedContext.scale(-1, 1);
+    flippedContext.drawImage(canvas, 0, 0);
+
+    return flippedCanvas;
   };
 
   const handleReset = () => {
     setImage(null);
     setCropData(null);
     setCrop(false);
+  };
+
+  const handleRotatedLeft = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      cropper.rotate(-5);
+      setRotateDegree(rotateDegree - 5);
+    }
+  };
+
+  const handleRotatedRight = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      cropper.rotate(5);
+      setRotateDegree(rotateDegree + 5);
+    }
+  };
+
+  const handleRotatedReset = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      cropper.rotate(rotateDegree < 0 ? Math.abs(rotateDegree) : -rotateDegree);
+      setRotateDegree(0);
+    }
+  };
+
+  const handleToggleFlip = () => {
+    const cropper = cropperRef.current?.cropper;
+    if (cropper) {
+      setToggleFlip(!toggleFlip);
+    }
   };
 
   const handleOpenFileInput = () => {
@@ -118,7 +178,7 @@ const CropperComponent = () => {
         {image && (
           <div className="cropper-container">
             <Cropper
-              className="cropper"
+              className={toggleFlip ? "cropper cropper-reverse" : "cropper"}
               ref={cropperRef}
               alt="Cropper"
               src={image}
@@ -127,8 +187,8 @@ const CropperComponent = () => {
               dragMode={dragMode}
               zoomOnWheel={false}
               background={false}
-              guides={true}
               cropBoxResizable={false}
+              rotatable={true}
               // cropstart={setDefaultCropper}
               cropmove={onCropperMove}
               crop={crop}
@@ -141,11 +201,36 @@ const CropperComponent = () => {
                   left: `${cropperPosistion.left}px`,
                 }}
               >
-                <button className="crop-tick-button" onClick={handleCrop}>
-                  <FaCheck />
+                <button className="crop-crop-button" onClick={handleCrop}>
+                  <FaCropAlt />
                 </button>
-                <button className="crop-cross-button" onClick={handleReset}>
-                  <FaTimes />
+                <button className="crop-trash-button" onClick={handleReset}>
+                  <FaTrashAlt />
+                </button>
+                <button
+                  className="crop-rotate-left-button"
+                  onClick={handleRotatedLeft}
+                >
+                  <FaRedo />
+                </button>
+                <button
+                  className="crop-rotate-right-button"
+                  onClick={handleRotatedRight}
+                >
+                  <FaRedo />
+                </button>
+                <button
+                  className="crop-rotate-reset-button"
+                  onClick={handleRotatedReset}
+                >
+                  <FaSync />
+                </button>
+
+                <button
+                  className="crop-rotate-reverse-button"
+                  onClick={handleToggleFlip}
+                >
+                  <FaYandex />
                 </button>
               </div>
             )}
