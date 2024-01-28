@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -11,7 +11,10 @@ const CropperComponent = () => {
   const [image, setImage] = useState(null);
 
   const cropperRef = useRef(null);
-  const [cropperPosistion, setCropperPosition] = useState({ top: 0, left: 0 });
+  const [cropperPosistion, setCropperPosition] = useState({
+    top: null,
+    left: null,
+  });
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
   const [cropData, setCropData] = useState(null);
@@ -50,7 +53,6 @@ const CropperComponent = () => {
   const onCropperMove = () => {
     const cropper = cropperRef.current?.cropper;
     const cropperPosistion = cropper.getCropBoxData();
-    // console.log(cropper.getCropBoxData().top,cropper.getCropBoxData().left);
     if (cropperPosistion.top >= 0 && cropperPosistion.left >= 0) {
       setCropperPosition({
         top: Math.floor(cropperPosistion.top),
@@ -62,19 +64,12 @@ const CropperComponent = () => {
   const setDefaultCropper = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
-      const cropperPosistion = cropper.getCropBoxData();
-      console.log(cropper,{
+      const cropperPosistion = cropper.cropBoxData;
+      setCropperPosition({
         top: Math.floor(cropperPosistion.top),
         left: Math.floor(cropperPosistion.left),
       });
-      
     }
-    // if (cropperPosistion.top >= 0 && cropperPosistion.left >= 0) {
-    //   setCropperPosition({
-    //     top: Math.floor(cropperPosistion.top),
-    //     left: Math.floor(cropperPosistion.left),
-    //   });
-    // }
   };
 
   const handleCrop = () => {
@@ -103,8 +98,9 @@ const CropperComponent = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div>
       <div
+        className="dragDrop-area"
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         style={{
@@ -124,8 +120,9 @@ const CropperComponent = () => {
             <Cropper
               className="cropper"
               ref={cropperRef}
+              alt="Cropper"
               src={image}
-              onInitialized={handleCropperLoaded}
+              ready={setDefaultCropper}
               initialAspectRatio={4 / 5}
               dragMode={dragMode}
               zoomOnWheel={false}
