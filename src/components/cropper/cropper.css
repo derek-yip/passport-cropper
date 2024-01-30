@@ -8,14 +8,6 @@
   max-height: 100%;
 }
 
-/* :is(.cropper-container) .hidden-flip-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  content: "";
-  max-height: 100%;
-} */
-
 .cropper-flip {
   transform: rotateY(180deg);
 }
