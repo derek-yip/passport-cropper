@@ -3,11 +3,20 @@
   height: 100%;
 }
 
-.cropper {
+:is(.cropper-container) .cropper {
+  position: relative;
   max-height: 100%;
 }
 
-.cropper-reverse {
+/* :is(.cropper-container) .hidden-flip-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: "";
+  max-height: 100%;
+} */
+
+.cropper-flip {
   transform: rotateY(180deg);
 }
 
@@ -15,7 +24,7 @@
   position: absolute;
   display: flex;
   align-items: flex-end;
-  gap: 5px;
+  gap: 2%;
 }
 
 :is(.cropper-button-container) button {
@@ -55,6 +64,6 @@
   background-color: lightseagreen;
 }
 
-.crop-rotate-reverse-button {
+.crop-rotate-flip-button {
   background-color: paleturquoise;
 }

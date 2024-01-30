@@ -14,20 +14,22 @@ import {
 
 const CropperComponent = () => {
   const fileInputRef = useRef(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("./testing.jpeg");
 
+  const hiddenFlipImage = useRef(null);
   const cropperRef = useRef(null);
   const [cropperPosistion, setCropperPosition] = useState({
     top: null,
     left: null,
   });
+
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
   const [cropData, setCropData] = useState(null);
   const [rotateDegree, setRotateDegree] = useState(0);
   const [toggleFlip, setToggleFlip] = useState(false);
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+
+  const onLoadReader = (file) => {
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -37,6 +39,11 @@ const CropperComponent = () => {
     if (file) {
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    onLoadReader(file);
   };
 
   const handleDragOver = (e) => {
@@ -46,29 +53,19 @@ const CropperComponent = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+    onLoadReader(file);
   };
 
   const onCropperMove = () => {
     const cropper = cropperRef.current?.cropper;
     const cropperPosistion = cropper.getCropBoxData();
-    if (cropperPosistion.top >= 0 && cropperPosistion.left >= 0) {
-      setCropperPosition({
-        top: Math.floor(cropperPosistion.top),
-        left: toggleFlip
-          ? Math.abs(Math.floor(cropperPosistion.left))
-          : Math.floor(cropperPosistion.left),
-      });
-      console.log(cropperPosistion);
-    }
+
+    setCropperPosition({
+      top: Math.floor(cropperPosistion.top),
+      left: toggleFlip
+        ? Math.abs(Math.floor(cropperPosistion.left))
+        : Math.floor(cropperPosistion.left),
+    });
   };
 
   const setDefaultCropper = () => {
@@ -92,20 +89,6 @@ const CropperComponent = () => {
       : croppedCanvas;
 
     setCropData(croppedCanvas.toDataURL());
-  };
-
-  const horizontalFlipCanvas = (canvas) => {
-    const flippedCanvas = document.createElement("canvas");
-    const flippedContext = flippedCanvas.getContext("2d");
-
-    flippedCanvas.width = canvas.width;
-    flippedCanvas.height = canvas.height;
-
-    flippedContext.translate(flippedCanvas.width, 0);
-    flippedContext.scale(-1, 1);
-    flippedContext.drawImage(canvas, 0, 0);
-
-    return flippedCanvas;
   };
 
   const handleReset = () => {
@@ -142,11 +125,33 @@ const CropperComponent = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       setToggleFlip(!toggleFlip);
+      handleCrop();
+
+      const cropBox = cropper.canvas.children[0];
+      console.log(cropBox);
+      cropBox.classList.toggle("cropper-flip");
+
+      // var targetImage = cropper.canvas.children[0];
+      // targetImage = horizontalFlipCanvas(targetImage);
+      // setImage(targetImage.toDataURL());
     }
   };
 
+  const horizontalFlipCanvas = (canvas) => {
+    const flippedCanvas = document.createElement("canvas");
+    const ctx = flippedCanvas.getContext("2d");
+
+    flippedCanvas.width = canvas.width;
+    flippedCanvas.height = canvas.height;
+
+    ctx.translate(flippedCanvas.width, 0);
+    ctx.scale(-1, 1);
+    ctx.drawImage(canvas, 0, 0);
+
+    return flippedCanvas;
+  };
+
   const handleOpenFileInput = () => {
-    if (cropData != null) return;
     fileInputRef.current.click();
   };
 
@@ -178,7 +183,8 @@ const CropperComponent = () => {
         {image && (
           <div className="cropper-container">
             <Cropper
-              className={toggleFlip ? "cropper cropper-reverse" : "cropper"}
+              className="cropper"
+              // className={toggleFlip ? "cropper cropper-flip" : "cropper"}
               ref={cropperRef}
               alt="Cropper"
               src={image}
@@ -227,7 +233,7 @@ const CropperComponent = () => {
                 </button>
 
                 <button
-                  className="crop-rotate-reverse-button"
+                  className="crop-rotate-flip-button"
                   onClick={handleToggleFlip}
                 >
                   <FaYandex />
