@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import "./components/cropper/cropper.css";
+
+import Modal from "./components/modal/modal";
 
 import {
   FaCropAlt,
@@ -16,7 +18,6 @@ const CropperComponent = () => {
   const fileInputRef = useRef(null);
   const [image, setImage] = useState("./testing.jpeg");
 
-  const hiddenFlipImage = useRef(null);
   const cropperRef = useRef(null);
   const [cropperPosistion, setCropperPosition] = useState({
     top: null,
@@ -28,6 +29,8 @@ const CropperComponent = () => {
   const [cropData, setCropData] = useState(null);
   const [rotateDegree, setRotateDegree] = useState(0);
   const [toggleFlip, setToggleFlip] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   const onLoadReader = (file) => {
     const reader = new FileReader();
@@ -54,6 +57,7 @@ const CropperComponent = () => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     onLoadReader(file);
+    setModalOpen(true);
   };
 
   const onCropperMove = () => {
@@ -84,11 +88,8 @@ const CropperComponent = () => {
     const cropper = cropperRef.current?.cropper;
     var croppedCanvas = cropper.getCroppedCanvas();
 
-    croppedCanvas = toggleFlip
-      ? horizontalFlipCanvas(croppedCanvas)
-      : croppedCanvas;
-
     setCropData(croppedCanvas.toDataURL());
+    setModalOpen(true);
   };
 
   const handleReset = () => {
@@ -125,15 +126,13 @@ const CropperComponent = () => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
       setToggleFlip(!toggleFlip);
-      handleCrop();
 
-      const cropBox = cropper.canvas.children[0];
-      console.log(cropBox);
-      cropBox.classList.toggle("cropper-flip");
+      var croppedCanvas = cropper.getCroppedCanvas();
+      const targetImage = toggleFlip
+        ? horizontalFlipCanvas(croppedCanvas)
+        : croppedCanvas;
 
-      // var targetImage = cropper.canvas.children[0];
-      // targetImage = horizontalFlipCanvas(targetImage);
-      // setImage(targetImage.toDataURL());
+      setCropData(targetImage.toDataURL());
     }
   };
 
@@ -163,7 +162,7 @@ const CropperComponent = () => {
   };
 
   return (
-    <div>
+    <div className="main-container">
       <div
         className="dragDrop-area"
         onDragOver={handleDragOver}
@@ -231,13 +230,6 @@ const CropperComponent = () => {
                 >
                   <FaSync />
                 </button>
-
-                <button
-                  className="crop-rotate-flip-button"
-                  onClick={handleToggleFlip}
-                >
-                  <FaYandex />
-                </button>
               </div>
             )}
           </div>
@@ -257,13 +249,25 @@ const CropperComponent = () => {
         <button onClick={handleCrop}>Crop</button>
         <button onClick={handleReset}>Reset</button>
       </div>
-      {cropData && (
-        <div>
-          <h2>Cropped Image Preview:</h2>
-          <img src={cropData} alt="Cropped" style={{ maxHeight: "400px" }} />
-          <button onClick={handleDownload}>Download</button>
-        </div>
-      )}
+      <Modal
+        isOpen={modalOpen}
+        showBottom={true}
+        toggleFlip={toggleFlip}
+        setClose={() => setModalOpen(false)}
+        handleDownload={handleDownload}
+        handleToggleFlip={handleToggleFlip}
+      >
+        <h2>Preview</h2>
+        {cropData && (
+          <div>
+            <img
+              className="modal-image-preview"
+              src={cropData}
+              alt="Modal Image"
+            />
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

@@ -6,10 +6,7 @@
 :is(.cropper-container) .cropper {
   position: relative;
   max-height: 100%;
-}
-
-.cropper-flip {
-  transform: rotateY(180deg);
+  max-width: 100%;
 }
 
 .cropper-button-container {
@@ -57,5 +54,5 @@
 }
 
 .crop-rotate-flip-button {
-  background-color: paleturquoise;
+  background-color: rgb(92, 162, 247);
 }
