@@ -251,21 +251,21 @@ const CropperComponent = () => {
       </div>
       <Modal
         isOpen={modalOpen}
+        heading={`Preview`}
         showBottom={true}
         toggleFlip={toggleFlip}
         setClose={() => setModalOpen(false)}
         handleDownload={handleDownload}
         handleToggleFlip={handleToggleFlip}
       >
-        <h2>Preview</h2>
         {cropData && (
-          <div>
+          <>
             <img
               className="modal-image-preview"
               src={cropData}
               alt="Modal Image"
             />
-          </div>
+          </>
         )}
       </Modal>
     </div>

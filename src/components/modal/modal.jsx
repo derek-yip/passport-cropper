@@ -13,7 +13,9 @@ function Modal(props) {
         <button className="modal-close" onClick={props.setClose}>
           <FaRegWindowClose />
         </button>
-        {props.children}
+        {props.heading && <h2>{props.heading}</h2>}
+        
+        <div className="modal-content-inner">{props.children}</div>
         {props.showBottom && (
           <div className="bottom-button-container">
             <button onClick={props.handleDownload}>
