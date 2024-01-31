@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -123,18 +123,22 @@ const CropperComponent = () => {
   };
 
   const handleToggleFlip = () => {
+    setToggleFlip(!toggleFlip);
+  };
+
+  useEffect(() => {
     const cropper = cropperRef.current?.cropper;
     if (cropper) {
-      setToggleFlip(!toggleFlip);
-
       var croppedCanvas = cropper.getCroppedCanvas();
-      const targetImage = toggleFlip
-        ? horizontalFlipCanvas(croppedCanvas)
-        : croppedCanvas;
+      if (croppedCanvas) {
+        const targetImage = toggleFlip
+          ? horizontalFlipCanvas(croppedCanvas)
+          : croppedCanvas;
 
-      setCropData(targetImage.toDataURL());
+        setCropData(targetImage.toDataURL());
+      }
     }
-  };
+  }, [toggleFlip]);
 
   const horizontalFlipCanvas = (canvas) => {
     const flippedCanvas = document.createElement("canvas");
@@ -247,7 +251,7 @@ const CropperComponent = () => {
       <div className="buttonList">
         <button onClick={handleOpenFileInput}>Upload</button>
         <button onClick={handleCrop}>Crop</button>
-        <button onClick={handleReset}>Reset</button>
+        <button onClick={handleToggleFlip}>Reset</button>
       </div>
       <Modal
         isOpen={modalOpen}
@@ -255,8 +259,8 @@ const CropperComponent = () => {
         showBottom={true}
         toggleFlip={toggleFlip}
         setClose={() => setModalOpen(false)}
-        handleDownload={handleDownload}
-        handleToggleFlip={handleToggleFlip}
+        handleDownload={() => handleDownload()}
+        handleToggleFlip={() => handleToggleFlip()}
       >
         {cropData && (
           <>
