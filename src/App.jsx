@@ -19,6 +19,7 @@ const CropperComponent = () => {
   const [image, setImage] = useState("./testing.jpeg");
 
   const cropperRef = useRef(null);
+  const [cropper, setcropper] = useState(null);
   const [cropperPosistion, setCropperPosition] = useState({
     top: null,
     left: null,
@@ -27,10 +28,12 @@ const CropperComponent = () => {
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
   const [cropData, setCropData] = useState(null);
-  const [rotateDegree, setRotateDegree] = useState(0);
   const [toggleFlip, setToggleFlip] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [rotateLeft, setRotateLeft] = useState(false);
+  const [rotateRight, setRotateRight] = useState(false);
 
   const onLoadReader = (file) => {
     const reader = new FileReader();
@@ -60,6 +63,20 @@ const CropperComponent = () => {
     setModalOpen(true);
   };
 
+  const setDefaultCropper = () => {
+    setcropper(cropperRef.current?.cropper);
+  };
+
+  useEffect(() => {
+    if (cropper) {
+      const cropperPosistion = cropper.cropBoxData;
+      setCropperPosition({
+        top: Math.floor(cropperPosistion.top),
+        left: Math.floor(cropperPosistion.left),
+      });
+    }
+  }, [cropper]);
+
   const onCropperMove = () => {
     const cropper = cropperRef.current?.cropper;
     const cropperPosistion = cropper.getCropBoxData();
@@ -72,54 +89,50 @@ const CropperComponent = () => {
     });
   };
 
-  const setDefaultCropper = () => {
-    const cropper = cropperRef.current?.cropper;
-    if (cropper) {
-      const cropperPosistion = cropper.cropBoxData;
-      setCropperPosition({
-        top: Math.floor(cropperPosistion.top),
-        left: Math.floor(cropperPosistion.left),
-      });
-    }
-  };
-
   const handleCrop = () => {
     setCrop(true);
-    const cropper = cropperRef.current?.cropper;
-    var croppedCanvas = cropper.getCroppedCanvas();
-
-    setCropData(croppedCanvas.toDataURL());
-    setModalOpen(true);
-  };
-
-  const handleReset = () => {
-    setImage(null);
-    setCropData(null);
-    setCrop(false);
-  };
-
-  const handleRotatedLeft = () => {
-    const cropper = cropperRef.current?.cropper;
     if (cropper) {
-      cropper.rotate(-5);
-      setRotateDegree(rotateDegree - 5);
+      var croppedCanvas = cropper.getCroppedCanvas();
+
+      setCropData(croppedCanvas.toDataURL());
+      setModalOpen(true);
     }
   };
 
-  const handleRotatedRight = () => {
-    const cropper = cropperRef.current?.cropper;
-    if (cropper) {
-      cropper.rotate(5);
-      setRotateDegree(rotateDegree + 5);
-    }
+  const handleRotatedLeft = (event) => {
+    setRotateLeft(true);
+    event.preventDefault();
   };
 
-  const handleRotatedReset = () => {
-    const cropper = cropperRef.current?.cropper;
-    if (cropper) {
-      cropper.rotate(rotateDegree < 0 ? Math.abs(rotateDegree) : -rotateDegree);
-      setRotateDegree(0);
+  const handleRotatedRight = (event) => {
+    setRotateRight(true);
+    event.preventDefault();
+  };
+
+  useEffect(() => {
+    let rotateLeftTimer, rotateRightTimer;
+
+    if (cropper && rotateLeft) {
+      rotateLeftTimer = setInterval(() => {
+        cropper.rotate(-5);
+      }, 100);
     }
+
+    if (cropper && rotateRight) {
+      rotateRightTimer = setInterval(() => {
+        cropper.rotate(5);
+      }, 100);
+    }
+
+    return () => {
+      clearInterval(rotateLeftTimer);
+      clearInterval(rotateRightTimer);
+    };
+  }, [rotateLeft, rotateRight]);
+
+  const stopRotated = () => {
+    setRotateLeft(false);
+    setRotateRight(false);
   };
 
   const handleToggleFlip = () => {
@@ -127,7 +140,6 @@ const CropperComponent = () => {
   };
 
   useEffect(() => {
-    const cropper = cropperRef.current?.cropper;
     if (cropper) {
       var croppedCanvas = cropper.getCroppedCanvas();
       if (croppedCanvas) {
@@ -163,6 +175,19 @@ const CropperComponent = () => {
     downloadLink.href = cropData;
     downloadLink.download = "cropped_image.png";
     downloadLink.click();
+  };
+
+  const handleReset = () => {
+    setImage(null);
+    setCropData(null);
+    setCrop(false);
+    handleRotatedReset();
+  };
+
+  const handleRotatedReset = () => {
+    if (cropper) {
+      cropper.reset()
+    }
   };
 
   return (
@@ -218,13 +243,17 @@ const CropperComponent = () => {
                 </button>
                 <button
                   className="crop-rotate-left-button"
-                  onClick={handleRotatedLeft}
+                  onMouseDown={handleRotatedLeft}
+                  onMouseUp={stopRotated}
+                  onMouseLeave={stopRotated}
                 >
                   <FaRedo />
                 </button>
                 <button
                   className="crop-rotate-right-button"
-                  onClick={handleRotatedRight}
+                  onMouseDown={handleRotatedRight}
+                  onMouseUp={stopRotated}
+                  onMouseLeave={stopRotated}
                 >
                   <FaRedo />
                 </button>
@@ -251,7 +280,7 @@ const CropperComponent = () => {
       <div className="buttonList">
         <button onClick={handleOpenFileInput}>Upload</button>
         <button onClick={handleCrop}>Crop</button>
-        <button onClick={handleToggleFlip}>Reset</button>
+        <button onClick={handleReset}>Reset</button>
       </div>
       <Modal
         isOpen={modalOpen}
