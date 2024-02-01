@@ -130,10 +130,12 @@ const CropperComponent = () => {
 
   const handleEnlarge = (event) => {
     event.preventDefault();
+    cropper.zoom(0.2);
   };
 
   const handleCompress = (event) => {
     event.preventDefault();
+    cropper.zoom(-0.2);
   };
 
   useEffect(() => {
