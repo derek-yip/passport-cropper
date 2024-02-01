@@ -16,7 +16,9 @@ import {
 
 const CropperComponent = () => {
   const fileInputRef = useRef(null);
-  const [image, setImage] = useState("./testing.jpeg");
+
+  const [backupImage, setbackupImage] = useState("./testing.jpeg");
+  const [image, setImage] = useState(backupImage);
 
   const cropperRef = useRef(null);
   const [cropper, setcropper] = useState(null);
@@ -60,14 +62,17 @@ const CropperComponent = () => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
     onLoadReader(file);
-    setModalOpen(true);
+    if (cropper) {
+      setcropper(null);
+    }
   };
 
   const setDefaultCropper = () => {
     setcropper(cropperRef.current?.cropper);
+    setDefaultCropperButton();
   };
 
-  useEffect(() => {
+  const setDefaultCropperButton = () => {
     if (cropper) {
       const cropperPosistion = cropper.cropBoxData;
       setCropperPosition({
@@ -75,6 +80,10 @@ const CropperComponent = () => {
         left: Math.floor(cropperPosistion.left),
       });
     }
+  };
+
+  useEffect(() => {
+    setDefaultCropperButton();
   }, [cropper]);
 
   const onCropperMove = () => {
@@ -182,11 +191,12 @@ const CropperComponent = () => {
     setCropData(null);
     setCrop(false);
     handleRotatedReset();
+    setDefaultCropper();
   };
 
   const handleRotatedReset = () => {
     if (cropper) {
-      cropper.reset()
+      cropper.reset();
     }
   };
 
@@ -212,7 +222,6 @@ const CropperComponent = () => {
           <div className="cropper-container">
             <Cropper
               className="cropper"
-              // className={toggleFlip ? "cropper cropper-flip" : "cropper"}
               ref={cropperRef}
               alt="Cropper"
               src={image}
@@ -223,7 +232,7 @@ const CropperComponent = () => {
               background={false}
               cropBoxResizable={false}
               rotatable={true}
-              // cropstart={setDefaultCropper}
+              movable={true}
               cropmove={onCropperMove}
               crop={crop}
             />
@@ -277,11 +286,6 @@ const CropperComponent = () => {
         ref={fileInputRef}
       />
 
-      <div className="buttonList">
-        <button onClick={handleOpenFileInput}>Upload</button>
-        <button onClick={handleCrop}>Crop</button>
-        <button onClick={handleReset}>Reset</button>
-      </div>
       <Modal
         isOpen={modalOpen}
         heading={`Preview`}
