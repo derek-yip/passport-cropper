@@ -9,50 +9,67 @@
   max-width: 100%;
 }
 
-.cropper-button-container {
+.cropper-button-container,
+.cropper-button-container-bottom {
   position: absolute;
   display: flex;
-  align-items: flex-end;
-  gap: 2%;
 }
 
-:is(.cropper-button-container) button {
+.cropper-button-container-bottom {
+  transform: translateY(100%);
+}
+
+:is(.cropper-button-container, .cropper-button-container-bottom) button {
   color: rgb(42, 42, 42);
-  width: 3.5rem;
-  height: 2.5rem;
-  transition: none;
+  width: 3.2rem;
+  height: 2.2rem;
+  margin: 0 0.1rem;
 }
 
-:is(.cropper-button-container) button:active {
+:is(.cropper-button-container, .cropper-button-container-bottom) button:active {
   border: 1px solid transparent;
 }
 
-:is(.cropper-button-container) svg {
+:is(.cropper-button-container, .cropper-button-container-bottom) svg {
   width: 40%;
   height: 40%;
 }
 
-.crop-crop-button {
-  background-color: lightgreen;
+.crop-button {
+  background-color: #C1BBF2;
 }
 
-.crop-trash-button {
-  background-color: lightcoral;
+.trash-button {
+  background-color: #F2D8C7;
 }
 
-.crop-rotate-left-button {
+.rotate-left-button {
   transform: rotateY(180deg);
-  background-color: antiquewhite;
+  background-color: #AFCBF2;
 }
 
-.crop-rotate-right-button {
-  background-color: cornsilk;
+.rotate-right-button {
+  background-color: #F2E596;
 }
 
-.crop-rotate-reset-button {
-  background-color: lightseagreen;
+.rotate-reset-button {
+  background-color: #A2EEF2;
+}
+.image-enlarge-button{
+  background-color: #2AA4BF;
+}
+.image-compress-button{
+  background-color: #BFF29B;
+
+}
+.flip-horizontal-button {
+  background-color: #F2E963;
 }
 
-.crop-rotate-flip-button {
+.flip-vertical-button {
+  background-color: #F2F0D8;
+}
+
+.cropped-flip-button {
   background-color: rgb(92, 162, 247);
 }

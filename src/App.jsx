@@ -11,7 +11,10 @@ import {
   FaTrashAlt,
   FaRedo,
   FaSync,
-  FaYandex,
+  FaExpand,
+  FaCompressArrowsAlt,
+  FaGripLines,
+  FaGripLinesVertical,
 } from "react-icons/fa";
 
 const CropperComponent = () => {
@@ -25,12 +28,16 @@ const CropperComponent = () => {
   const [cropperPosistion, setCropperPosition] = useState({
     top: null,
     left: null,
+    height: null,
+    width: null,
   });
 
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
   const [cropData, setCropData] = useState(null);
   const [toggleFlip, setToggleFlip] = useState(false);
+  const [ToggleHorizontalFlip, setToggleHorizontalFlip] = useState(false);
+  const [ToggleVerticalFlip, setToggleVerticalFlip] = useState(false);
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -75,9 +82,12 @@ const CropperComponent = () => {
   const setDefaultCropperButton = () => {
     if (cropper) {
       const cropperPosistion = cropper.cropBoxData;
+
       setCropperPosition({
         top: Math.floor(cropperPosistion.top),
         left: Math.floor(cropperPosistion.left),
+        height: Math.floor(cropperPosistion.height),
+        width: Math.floor(cropperPosistion.width),
       });
     }
   };
@@ -118,6 +128,14 @@ const CropperComponent = () => {
     event.preventDefault();
   };
 
+  const handleEnlarge = (event) => {
+    event.preventDefault();
+  };
+
+  const handleCompress = (event) => {
+    event.preventDefault();
+  };
+
   useEffect(() => {
     let rotateLeftTimer, rotateRightTimer;
 
@@ -144,6 +162,14 @@ const CropperComponent = () => {
     setRotateRight(false);
   };
 
+  const handleFlipHorizontal = () => {
+    setToggleHorizontalFlip(!ToggleHorizontalFlip);
+  };
+
+  const handleFlipVertical = () => {
+    setToggleVerticalFlip(!ToggleVerticalFlip);
+  };
+
   const handleToggleFlip = () => {
     setToggleFlip(!toggleFlip);
   };
@@ -161,6 +187,23 @@ const CropperComponent = () => {
     }
   }, [toggleFlip]);
 
+  useEffect(() => {
+    if (cropper) {
+      if (ToggleVerticalFlip) {
+        cropper.scale(1).scale(1, -1);
+      }
+      ToggleHorizontalFlip ? cropper.scale(1, -1) : cropper.scale(1);
+    }
+  }, [ToggleHorizontalFlip]);
+
+  useEffect(() => {
+    if (cropper) {
+      if (ToggleHorizontalFlip) {
+        cropper.scale(1).scale(-1, 1);
+      }
+      ToggleVerticalFlip ? cropper.scale(-1, 1) : cropper.scale(1);
+    }
+  }, [ToggleVerticalFlip]);
   const horizontalFlipCanvas = (canvas) => {
     const flippedCanvas = document.createElement("canvas");
     const ctx = flippedCanvas.getContext("2d");
@@ -191,13 +234,18 @@ const CropperComponent = () => {
     setCropData(null);
     setCrop(false);
     handleRotatedReset();
-    setDefaultCropper();
   };
 
   const handleRotatedReset = () => {
     if (cropper) {
       cropper.reset();
+      setcropper(null);
     }
+    setDefaultCropper();
+
+    // handle Flip Vertical and Horizontal
+    setToggleHorizontalFlip(false);
+    setToggleVerticalFlip(false);
   };
 
   return (
@@ -244,14 +292,14 @@ const CropperComponent = () => {
                   left: `${cropperPosistion.left}px`,
                 }}
               >
-                <button className="crop-crop-button" onClick={handleCrop}>
+                <button className="crop-button" onClick={handleCrop}>
                   <FaCropAlt />
                 </button>
-                <button className="crop-trash-button" onClick={handleReset}>
+                <button className="trash-button" onClick={handleReset}>
                   <FaTrashAlt />
                 </button>
                 <button
-                  className="crop-rotate-left-button"
+                  className="rotate-left-button"
                   onMouseDown={handleRotatedLeft}
                   onMouseUp={stopRotated}
                   onMouseLeave={stopRotated}
@@ -259,7 +307,7 @@ const CropperComponent = () => {
                   <FaRedo />
                 </button>
                 <button
-                  className="crop-rotate-right-button"
+                  className="rotate-right-button"
                   onMouseDown={handleRotatedRight}
                   onMouseUp={stopRotated}
                   onMouseLeave={stopRotated}
@@ -267,10 +315,44 @@ const CropperComponent = () => {
                   <FaRedo />
                 </button>
                 <button
-                  className="crop-rotate-reset-button"
+                  className="rotate-reset-button"
                   onClick={handleRotatedReset}
                 >
                   <FaSync />
+                </button>
+              </div>
+            )}
+            {image && (
+              <div
+                className="cropper-button-container-bottom"
+                style={{
+                  top: `${cropperPosistion.top + 5}px`,
+                  left: `${cropperPosistion.left}px`,
+                }}
+              >
+                <button
+                  className="image-enlarge-button"
+                  onClick={handleEnlarge}
+                >
+                  <FaExpand />
+                </button>
+                <button
+                  className="image-compress-button"
+                  onClick={handleCompress}
+                >
+                  <FaCompressArrowsAlt />
+                </button>
+                <button
+                  className="flip-horizontal-button"
+                  onClick={handleFlipHorizontal}
+                >
+                  <FaGripLinesVertical />
+                </button>
+                <button
+                  className="flip-vertical-button"
+                  onClick={handleFlipVertical}
+                >
+                  <FaGripLines />
                 </button>
               </div>
             )}
