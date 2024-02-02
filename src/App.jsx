@@ -6,16 +6,18 @@ import "./components/cropper/cropper.css";
 
 import Modal from "./components/modal/modal";
 
+import "./components/photoDropArea/photoDropArea.css";
+
 import {
   FaCropAlt,
   FaTrashAlt,
   FaRedo,
   FaSync,
-  FaExpand,
-  FaCompressArrowsAlt,
   FaGripLines,
   FaGripLinesVertical,
 } from "react-icons/fa";
+
+import { IoIosContract, IoIosExpand } from "react-icons/io";
 
 const CropperComponent = () => {
   const fileInputRef = useRef(null);
@@ -221,7 +223,9 @@ const CropperComponent = () => {
   };
 
   const handleOpenFileInput = () => {
-    fileInputRef.current.click();
+    if (!image) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleDownload = () => {
@@ -256,15 +260,9 @@ const CropperComponent = () => {
         className="dragDrop-area"
         onDragOver={handleDragOver}
         onDrop={handleDrop}
+        onClick={handleOpenFileInput}
         style={{
-          position: "relative",
-          minHeight: "20rem",
-          height: "40rem",
-          border: "2px dashed #ccc",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          // cursor: "pointer",
+          cursor: !image ? "pointer" : "",
         }}
       >
         {!image && <h2>Drag and Drop an image here or click to browse</h2>}
@@ -286,7 +284,7 @@ const CropperComponent = () => {
               cropmove={onCropperMove}
               crop={crop}
             />
-            {image && (
+            {(image && cropper) && (
               <div
                 className="cropper-button-container"
                 style={{
@@ -324,9 +322,9 @@ const CropperComponent = () => {
                 </button>
               </div>
             )}
-            {image && (
+            {(image && cropper) && (
               <div
-                className="cropper-button-container-bottom"
+                className="cropper-button-second-container"
                 style={{
                   top: `${cropperPosistion.top + 5}px`,
                   left: `${cropperPosistion.left}px`,
@@ -336,13 +334,13 @@ const CropperComponent = () => {
                   className="image-enlarge-button"
                   onClick={handleEnlarge}
                 >
-                  <FaExpand />
+                  <IoIosExpand />
                 </button>
                 <button
                   className="image-compress-button"
                   onClick={handleCompress}
                 >
-                  <FaCompressArrowsAlt />
+                  <IoIosContract />
                 </button>
                 <button
                   className="flip-horizontal-button"

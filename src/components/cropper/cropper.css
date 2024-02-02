@@ -10,29 +10,33 @@
 }
 
 .cropper-button-container,
-.cropper-button-container-bottom {
+.cropper-button-second-container {
   position: absolute;
   display: flex;
 }
 
-.cropper-button-container-bottom {
+.cropper-button-second-container {
   transform: translateY(100%);
 }
 
-:is(.cropper-button-container, .cropper-button-container-bottom) button {
+:is(.cropper-button-container, .cropper-button-second-container) button {
   color: rgb(42, 42, 42);
   width: 3.2rem;
   height: 2.2rem;
   margin: 0 0.1rem;
 }
 
-:is(.cropper-button-container, .cropper-button-container-bottom) button:active {
+:is(.cropper-button-container, .cropper-button-second-container) button:active {
   border: 1px solid transparent;
 }
 
-:is(.cropper-button-container, .cropper-button-container-bottom) svg {
+:is(.cropper-button-container, .cropper-button-second-container) svg {
   width: 40%;
   height: 40%;
+}
+:is(.image-enlarge-button, .image-compress-button) svg {
+  width: 60%;
+  height: 60%;
 }
 
 .crop-button {
