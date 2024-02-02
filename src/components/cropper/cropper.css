@@ -24,6 +24,12 @@
   width: 3.2rem;
   height: 2.2rem;
   margin: 0 0.1rem;
+  opacity: 0.5;
+  transition: 0.3s all ease-in-out;
+}
+
+:is(.cropper-button-container, .cropper-button-second-container) button:hover {
+  opacity: 1;
 }
 
 :is(.cropper-button-container, .cropper-button-second-container) button:active {
@@ -40,38 +46,37 @@
 }
 
 .crop-button {
-  background-color: #C1BBF2;
+  background-color: #c1bbf2;
 }
 
 .trash-button {
-  background-color: #F2D8C7;
+  background-color: #f2d8c7;
 }
 
 .rotate-left-button {
   transform: rotateY(180deg);
-  background-color: #AFCBF2;
+  background-color: #afcbf2;
 }
 
 .rotate-right-button {
-  background-color: #F2E596;
+  background-color: #f2e596;
 }
 
 .rotate-reset-button {
-  background-color: #A2EEF2;
+  background-color: #a2eef2;
 }
-.image-enlarge-button{
-  background-color: #2AA4BF;
+.image-enlarge-button {
+  background-color: #2aa4bf;
 }
-.image-compress-button{
-  background-color: #BFF29B;
-
+.image-compress-button {
+  background-color: #bff29b;
 }
 .flip-horizontal-button {
-  background-color: #F2E963;
+  background-color: #f2e963;
 }
 
 .flip-vertical-button {
-  background-color: #F2F0D8;
+  background-color: #f2f0d8;
 }
 
 .cropped-flip-button {
