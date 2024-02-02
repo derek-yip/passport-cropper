@@ -108,7 +108,7 @@ const CropperComponent = () => {
     });
   };
 
-  const handleCrop = () => {
+  const handleCrop = (event) => {
     setCrop(true);
     if (cropper) {
       var croppedCanvas = cropper.getCroppedCanvas();
@@ -119,13 +119,13 @@ const CropperComponent = () => {
   };
 
   const handleRotatedLeft = (event) => {
-    setRotateLeft(true);
     event.preventDefault();
+    setRotateLeft(true);
   };
 
   const handleRotatedRight = (event) => {
-    setRotateRight(true);
     event.preventDefault();
+    setRotateRight(true);
   };
 
   const handleEnlarge = (event) => {
@@ -238,7 +238,7 @@ const CropperComponent = () => {
     handleRotatedReset();
   };
 
-  const handleRotatedReset = () => {
+  const handleRotatedReset = (event) => {
     if (cropper) {
       cropper.reset();
       setcropper(null);
@@ -348,13 +348,13 @@ const CropperComponent = () => {
                   className="flip-horizontal-button"
                   onClick={handleFlipHorizontal}
                 >
-                  <FaGripLinesVertical />
+                  <FaGripLines />
                 </button>
                 <button
                   className="flip-vertical-button"
                   onClick={handleFlipVertical}
                 >
-                  <FaGripLines />
+                  <FaGripLinesVertical />
                 </button>
               </div>
             )}
