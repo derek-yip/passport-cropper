@@ -205,7 +205,7 @@ const CropperComponent = () => {
     downloadLink.click();
   };
 
-  const printPassportPhoto = () => {
+  const CovertToPassportPhoto = () => {
     // Calculate the width and height of each image piece
     var pieceWidth = 3000 / 4;
     var pieceHeight = 2100 / 2;
@@ -370,7 +370,7 @@ const CropperComponent = () => {
         showBottom={true}
         setClose={() => setModalOpen(false)}
         handleDownload={() => handleDownload()}
-        printPassportPhoto={() => printPassportPhoto()}
+        CovertToPassportPhoto={() => CovertToPassportPhoto()}
       >
         {cropData && (
           <>

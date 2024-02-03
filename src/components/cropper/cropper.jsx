@@ -1,6 +1,9 @@
+import React, { useState, useRef, useEffect } from "react";
+
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import "../cropper/cropper.css";
+import "./components/cropper/cropper.css";
+
 import {
   FaCropAlt,
   FaTrashAlt,
@@ -11,8 +14,7 @@ import {
 } from "react-icons/fa";
 
 import { IoIosContract, IoIosExpand } from "react-icons/io";
-
-function ReactCropper({ props }) {
+function ReactCropper() {
   const fileInputRef = useRef(null);
 
   const [backupImage, setbackupImage] = useState("./testing.jpeg");
@@ -185,18 +187,43 @@ function ReactCropper({ props }) {
     }
   }, [ToggleVerticalFlip]);
 
-  const horizontalFlipCanvas = (canvas) => {
-    const flippedCanvas = document.createElement("canvas");
-    const ctx = flippedCanvas.getContext("2d");
+  const handleOpenFileInput = () => {
+    if (!image) {
+      fileInputRef.current.click();
+    }
+  };
 
-    flippedCanvas.width = canvas.width;
-    flippedCanvas.height = canvas.height;
+  const handleDownload = () => {
+    const downloadLink = document.createElement("a");
+    downloadLink.href = cropData;
+    downloadLink.download = "cropped_image.png";
+    downloadLink.click();
+  };
 
-    ctx.translate(flippedCanvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(canvas, 0, 0);
+  const printPassportPhoto = () => {
+    // Calculate the width and height of each image piece
+    var pieceWidth = 3000 / 4;
+    var pieceHeight = 2100 / 2;
 
-    return flippedCanvas;
+    // Create a new canvas element
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+
+    // Set the canvas dimensions to match the layout of the images
+    canvas.width = pieceWidth * 4;
+    canvas.height = pieceHeight * 2;
+    // Loop through the images and draw them on the canvas
+    for (var y = 0; y < 2; y++) {
+      for (var x = 0; x < 4; x++) {
+        // Draw the image on the canvas
+        var xPos = x * pieceWidth;
+        var yPos = y * pieceHeight;
+        context.drawImage(UnconvertData, xPos, yPos, pieceWidth, pieceHeight);
+      }
+    }
+
+    // Convert the canvas to a data URL
+    setCropData(canvas.toDataURL());
   };
 
   const handleReset = () => {
@@ -206,7 +233,7 @@ function ReactCropper({ props }) {
     handleRotatedReset();
   };
 
-  const handleRotatedReset = () => {
+  const handleRotatedReset = (event) => {
     if (cropper) {
       cropper.reset();
       setcropper(null);
@@ -217,87 +244,7 @@ function ReactCropper({ props }) {
     setToggleHorizontalFlip(false);
     setToggleVerticalFlip(false);
   };
-
-  return (
-    <div className="cropper-container">
-      <Cropper
-        className="cropper"
-        ref={cropperRef}
-        alt="Cropper"
-        src={image}
-        ready={setDefaultCropper}
-        initialAspectRatio={4 / 5}
-        dragMode={dragMode}
-        zoomOnWheel={false}
-        background={false}
-        cropBoxResizable={false}
-        rotatable={true}
-        movable={true}
-        cropmove={onCropperMove}
-        crop={crop}
-      />
-      {image && cropper && (
-        <div
-          className="cropper-button-container"
-          style={{
-            top: `${cropperPosistion.top}px`,
-            left: `${cropperPosistion.left}px`,
-          }}
-        >
-          <button className="crop-button" onClick={handleCrop}>
-            <FaCropAlt />
-          </button>
-          <button className="trash-button" onClick={handleReset}>
-            <FaTrashAlt />
-          </button>
-          <button
-            className="rotate-left-button"
-            onMouseDown={handleRotatedLeft}
-            onMouseUp={stopRotated}
-            onMouseLeave={stopRotated}
-          >
-            <FaRedo />
-          </button>
-          <button
-            className="rotate-right-button"
-            onMouseDown={handleRotatedRight}
-            onMouseUp={stopRotated}
-            onMouseLeave={stopRotated}
-          >
-            <FaRedo />
-          </button>
-          <button className="rotate-reset-button" onClick={handleRotatedReset}>
-            <FaSync />
-          </button>
-        </div>
-      )}
-      {image && cropper && (
-        <div
-          className="cropper-button-second-container"
-          style={{
-            top: `${cropperPosistion.top + 5}px`,
-            left: `${cropperPosistion.left}px`,
-          }}
-        >
-          <button className="image-enlarge-button" onClick={handleEnlarge}>
-            <IoIosExpand />
-          </button>
-          <button className="image-compress-button" onClick={handleCompress}>
-            <IoIosContract />
-          </button>
-          <button
-            className="flip-horizontal-button"
-            onClick={handleFlipHorizontal}
-          >
-            <FaGripLines />
-          </button>
-          <button className="flip-vertical-button" onClick={handleFlipVertical}>
-            <FaGripLinesVertical />
-          </button>
-        </div>
-      )}
-    </div>
-  );
+  return <div>cropper</div>;
 }
 
 export default ReactCropper;
