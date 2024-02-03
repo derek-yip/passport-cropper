@@ -37,6 +37,8 @@ const CropperComponent = () => {
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
   const [cropData, setCropData] = useState(null);
+  const [UnconvertData, setUnconvertData] = useState(null);
+
   const [toggleFlip, setToggleFlip] = useState(false);
   const [ToggleHorizontalFlip, setToggleHorizontalFlip] = useState(false);
   const [ToggleVerticalFlip, setToggleVerticalFlip] = useState(false);
@@ -110,12 +112,13 @@ const CropperComponent = () => {
     });
   };
 
-  const handleCrop = (event) => {
+  const handleCrop = () => {
     setCrop(true);
     if (cropper) {
       var croppedCanvas = cropper.getCroppedCanvas();
 
       setCropData(croppedCanvas.toDataURL());
+      setUnconvertData(croppedCanvas)
       setModalOpen(true);
     }
   };
@@ -208,6 +211,7 @@ const CropperComponent = () => {
       ToggleVerticalFlip ? cropper.scale(-1, 1) : cropper.scale(1);
     }
   }, [ToggleVerticalFlip]);
+
   const horizontalFlipCanvas = (canvas) => {
     const flippedCanvas = document.createElement("canvas");
     const ctx = flippedCanvas.getContext("2d");
@@ -234,6 +238,32 @@ const CropperComponent = () => {
     downloadLink.download = "cropped_image.png";
     downloadLink.click();
   };
+
+  const printPassportPhoto = () =>{
+    // Calculate the width and height of each image piece
+    var pieceWidth = 3000 / 4;
+    var pieceHeight = 2100 / 2;
+  
+    // Create a new canvas element
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+  
+    // Set the canvas dimensions to match the layout of the images
+    canvas.width = pieceWidth * 4;
+    canvas.height = pieceHeight * 2;
+    // Loop through the images and draw them on the canvas
+    for (var y = 0; y < 2; y++) {
+      for (var x = 0; x < 4; x++) {  
+        // Draw the image on the canvas
+        var xPos = x * pieceWidth;
+        var yPos = y * pieceHeight;
+        context.drawImage(UnconvertData, xPos, yPos, pieceWidth, pieceHeight);
+      }
+    }
+  
+    // Convert the canvas to a data URL
+    setCropData(canvas.toDataURL());
+  }
 
   const handleReset = () => {
     setImage(null);
@@ -284,7 +314,7 @@ const CropperComponent = () => {
               cropmove={onCropperMove}
               crop={crop}
             />
-            {(image && cropper) && (
+            {image && cropper && (
               <div
                 className="cropper-button-container"
                 style={{
@@ -322,7 +352,7 @@ const CropperComponent = () => {
                 </button>
               </div>
             )}
-            {(image && cropper) && (
+            {image && cropper && (
               <div
                 className="cropper-button-second-container"
                 style={{
@@ -376,6 +406,7 @@ const CropperComponent = () => {
         setClose={() => setModalOpen(false)}
         handleDownload={() => handleDownload()}
         handleToggleFlip={() => handleToggleFlip()}
+        printPassportPhoto={()=> printPassportPhoto()}
       >
         {cropData && (
           <>
@@ -384,6 +415,7 @@ const CropperComponent = () => {
               src={cropData}
               alt="Modal Image"
             />
+            <div id="previewContainer"></div>
           </>
         )}
       </Modal>

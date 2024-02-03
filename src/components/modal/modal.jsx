@@ -1,6 +1,10 @@
 import "./modal.css";
 
-import { FaRegWindowClose, FaCloudDownloadAlt, FaYandex } from "react-icons/fa";
+import {
+  FaRegWindowClose,
+  FaCloudDownloadAlt,
+  FaGrin,
+} from "react-icons/fa";
 
 function Modal(props) {
   if (!props.isOpen) {
@@ -16,21 +20,14 @@ function Modal(props) {
         {props.heading && <h2>{props.heading}</h2>}
 
         <div className="modal-content-inner">{props.children}</div>
-        
+
         {props.showBottom && (
           <div className="bottom-button-container">
             <button onClick={props.handleDownload}>
               <FaCloudDownloadAlt />
             </button>
-            <button
-              className={
-                props.toggleFlip
-                  ? "crop-rotate-flip-button flip"
-                  : "crop-rotate-flip-button"
-              }
-              onClick={props.handleToggleFlip}
-            >
-              <FaYandex />
+            <button onClick={props.printPassportPhoto}>
+              <FaGrin />
             </button>
           </div>
         )}
