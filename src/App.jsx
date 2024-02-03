@@ -59,24 +59,6 @@ const CropperComponent = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    onLoadReader(file);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    onLoadReader(file);
-    if (cropper) {
-      setcropper(null);
-    }
-  };
-
   const setDefaultCropper = () => {
     setcropper(cropperRef.current?.cropper);
     setDefaultCropperButton();
@@ -92,6 +74,24 @@ const CropperComponent = () => {
         height: Math.floor(cropperPosistion.height),
         width: Math.floor(cropperPosistion.width),
       });
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    onLoadReader(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    onLoadReader(file);
+    if (cropper) {
+      setcropper(null);
     }
   };
 
@@ -281,76 +281,77 @@ const CropperComponent = () => {
               crop={crop}
             />
             {image && cropper && (
-              <div
-                className="cropper-button-container"
-                style={{
-                  top: `${cropperPosistion.top}px`,
-                  left: `${cropperPosistion.left}px`,
-                }}
-              >
-                <button className="crop-button" onClick={handleCrop}>
-                  <FaCropAlt />
-                </button>
-                <button className="trash-button" onClick={handleReset}>
-                  <FaTrashAlt />
-                </button>
-                <button
-                  className="rotate-left-button"
-                  onMouseDown={handleRotatedLeft}
-                  onMouseUp={stopRotated}
-                  onMouseLeave={stopRotated}
+              <>
+                <div
+                  className="cropper-button-container"
+                  style={{
+                    top: `${cropperPosistion.top}px`,
+                    left: `${cropperPosistion.left}px`,
+                  }}
                 >
-                  <FaRedo />
-                </button>
-                <button
-                  className="rotate-right-button"
-                  onMouseDown={handleRotatedRight}
-                  onMouseUp={stopRotated}
-                  onMouseLeave={stopRotated}
+                  <button className="crop-button" onClick={handleCrop}>
+                    <FaCropAlt />
+                  </button>
+                  <button className="trash-button" onClick={handleReset}>
+                    <FaTrashAlt />
+                  </button>
+                  <button
+                    className="rotate-left-button"
+                    onMouseDown={handleRotatedLeft}
+                    onMouseUp={stopRotated}
+                    onMouseLeave={stopRotated}
+                  >
+                    <FaRedo />
+                  </button>
+                  <button
+                    className="rotate-right-button"
+                    onMouseDown={handleRotatedRight}
+                    onMouseUp={stopRotated}
+                    onMouseLeave={stopRotated}
+                  >
+                    <FaRedo />
+                  </button>
+                  <button
+                    className="rotate-reset-button"
+                    onClick={handleRotatedReset}
+                  >
+                    <FaSync />
+                  </button>
+                </div>
+
+                <div
+                  className="cropper-button-second-container"
+                  style={{
+                    top: `${cropperPosistion.top + 5}px`,
+                    left: `${cropperPosistion.left}px`,
+                  }}
                 >
-                  <FaRedo />
-                </button>
-                <button
-                  className="rotate-reset-button"
-                  onClick={handleRotatedReset}
-                >
-                  <FaSync />
-                </button>
-              </div>
-            )}
-            {image && cropper && (
-              <div
-                className="cropper-button-second-container"
-                style={{
-                  top: `${cropperPosistion.top + 5}px`,
-                  left: `${cropperPosistion.left}px`,
-                }}
-              >
-                <button
-                  className="image-enlarge-button"
-                  onClick={handleEnlarge}
-                >
-                  <IoIosExpand />
-                </button>
-                <button
-                  className="image-compress-button"
-                  onClick={handleCompress}
-                >
-                  <IoIosContract />
-                </button>
-                <button
-                  className="flip-horizontal-button"
-                  onClick={handleFlipHorizontal}
-                >
-                  <FaGripLines />
-                </button>
-                <button
-                  className="flip-vertical-button"
-                  onClick={handleFlipVertical}
-                >
-                  <FaGripLinesVertical />
-                </button>
-              </div>
+                  <button
+                    className="image-enlarge-button"
+                    onClick={handleEnlarge}
+                  >
+                    <IoIosExpand />
+                  </button>
+                  <button
+                    className="image-compress-button"
+                    onClick={handleCompress}
+                  >
+                    <IoIosContract />
+                  </button>
+                  <button
+                    className="flip-horizontal-button"
+                    onClick={handleFlipHorizontal}
+                  >
+                    <FaGripLines />
+                  </button>
+                  <button
+                    className="flip-vertical-button"
+                    onClick={handleFlipVertical}
+                  >
+                    <FaGripLinesVertical />
+                  </button>
+                </div>
+              </>
             )}
           </div>
         )}
