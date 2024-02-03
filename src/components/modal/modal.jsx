@@ -26,7 +26,7 @@ function Modal(props) {
             <button onClick={props.handleDownload}>
               <FaCloudDownloadAlt />
             </button>
-            <button onClick={props.printPassportPhoto}>
+            <button onClick={props.CovertToPassportPhoto}>
               <FaGrin />
             </button>
           </div>

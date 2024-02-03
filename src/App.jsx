@@ -39,7 +39,6 @@ const CropperComponent = () => {
   const [cropData, setCropData] = useState(null);
   const [UnconvertData, setUnconvertData] = useState(null);
 
-  const [toggleFlip, setToggleFlip] = useState(false);
   const [ToggleHorizontalFlip, setToggleHorizontalFlip] = useState(false);
   const [ToggleVerticalFlip, setToggleVerticalFlip] = useState(false);
 
@@ -106,9 +105,7 @@ const CropperComponent = () => {
 
     setCropperPosition({
       top: Math.floor(cropperPosistion.top),
-      left: toggleFlip
-        ? Math.abs(Math.floor(cropperPosistion.left))
-        : Math.floor(cropperPosistion.left),
+      left: Math.floor(cropperPosistion.left),
     });
   };
 
@@ -118,7 +115,7 @@ const CropperComponent = () => {
       var croppedCanvas = cropper.getCroppedCanvas();
 
       setCropData(croppedCanvas.toDataURL());
-      setUnconvertData(croppedCanvas)
+      setUnconvertData(croppedCanvas);
       setModalOpen(true);
     }
   };
@@ -177,23 +174,6 @@ const CropperComponent = () => {
     setToggleVerticalFlip(!ToggleVerticalFlip);
   };
 
-  const handleToggleFlip = () => {
-    setToggleFlip(!toggleFlip);
-  };
-
-  useEffect(() => {
-    if (cropper) {
-      var croppedCanvas = cropper.getCroppedCanvas();
-      if (croppedCanvas) {
-        const targetImage = toggleFlip
-          ? horizontalFlipCanvas(croppedCanvas)
-          : croppedCanvas;
-
-        setCropData(targetImage.toDataURL());
-      }
-    }
-  }, [toggleFlip]);
-
   useEffect(() => {
     if (cropper) {
       if (ToggleVerticalFlip) {
@@ -212,20 +192,6 @@ const CropperComponent = () => {
     }
   }, [ToggleVerticalFlip]);
 
-  const horizontalFlipCanvas = (canvas) => {
-    const flippedCanvas = document.createElement("canvas");
-    const ctx = flippedCanvas.getContext("2d");
-
-    flippedCanvas.width = canvas.width;
-    flippedCanvas.height = canvas.height;
-
-    ctx.translate(flippedCanvas.width, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(canvas, 0, 0);
-
-    return flippedCanvas;
-  };
-
   const handleOpenFileInput = () => {
     if (!image) {
       fileInputRef.current.click();
@@ -239,31 +205,31 @@ const CropperComponent = () => {
     downloadLink.click();
   };
 
-  const printPassportPhoto = () =>{
+  const printPassportPhoto = () => {
     // Calculate the width and height of each image piece
     var pieceWidth = 3000 / 4;
     var pieceHeight = 2100 / 2;
-  
+
     // Create a new canvas element
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d');
-  
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+
     // Set the canvas dimensions to match the layout of the images
     canvas.width = pieceWidth * 4;
     canvas.height = pieceHeight * 2;
     // Loop through the images and draw them on the canvas
     for (var y = 0; y < 2; y++) {
-      for (var x = 0; x < 4; x++) {  
+      for (var x = 0; x < 4; x++) {
         // Draw the image on the canvas
         var xPos = x * pieceWidth;
         var yPos = y * pieceHeight;
         context.drawImage(UnconvertData, xPos, yPos, pieceWidth, pieceHeight);
       }
     }
-  
+
     // Convert the canvas to a data URL
     setCropData(canvas.toDataURL());
-  }
+  };
 
   const handleReset = () => {
     setImage(null);
@@ -402,11 +368,9 @@ const CropperComponent = () => {
         isOpen={modalOpen}
         heading={`Preview`}
         showBottom={true}
-        toggleFlip={toggleFlip}
         setClose={() => setModalOpen(false)}
         handleDownload={() => handleDownload()}
-        handleToggleFlip={() => handleToggleFlip()}
-        printPassportPhoto={()=> printPassportPhoto()}
+        printPassportPhoto={() => printPassportPhoto()}
       >
         {cropData && (
           <>
