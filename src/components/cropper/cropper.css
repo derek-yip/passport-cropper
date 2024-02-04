@@ -1,31 +1,34 @@
 .cropper-container {
   position: relative;
   height: 100%;
+  max-height: 100%;
 }
 
 :is(.cropper-container) .cropper {
   position: relative;
-  max-height: 100%;
+  min-height: 80vh;
+  max-height: 80vh;
   max-width: 100%;
 }
 
-.cropper-button-container,
-.cropper-button-second-container {
+.cropper-crop-box {
+  z-index: 5;
+}
+
+.cropper-button-container {
   position: absolute;
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.1rem;
 }
 
-.cropper-button-second-container {
-  transform: translateY(100%);
-}
-
-:is(.cropper-button-container, .cropper-button-second-container) button {
+:is(.cropper-button-container) button {
   color: rgb(42, 42, 42);
-  width: 3.2rem;
-  height: 2.2rem;
-  margin: 0 0.1rem;
+  width: 3rem;
+  height: 2rem;
   opacity: 0.5;
   transition: 0.3s all ease-in-out;
+  z-index: 5;
 }
 
 :is(.cropper-button-container, .cropper-button-second-container) button:hover {
@@ -65,18 +68,25 @@
 .rotate-reset-button {
   background-color: #a2eef2;
 }
+
+.scroll-lock-button {
+  background-color: #A8F55F;
+}
+
 .image-enlarge-button {
   background-color: #2aa4bf;
 }
+
 .image-compress-button {
   background-color: #bff29b;
 }
+
 .flip-horizontal-button {
   background-color: #f2e963;
 }
 
 .flip-vertical-button {
-  background-color: #f2f0d8;
+  background-color: #F59FB7;
 }
 
 .cropped-flip-button {

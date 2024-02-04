@@ -4,15 +4,16 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import "./components/cropper/cropper.css";
 
-import Modal from "./components/modal/modal";
-
 import "./components/photoDropArea/photoDropArea.css";
+import Modal from "./components/modal/modal";
 
 import {
   FaCropAlt,
   FaTrashAlt,
   FaRedo,
   FaSync,
+  FaLockOpen,
+  FaLock,
   FaGripLines,
   FaGripLinesVertical,
 } from "react-icons/fa";
@@ -26,6 +27,7 @@ const CropperComponent = () => {
   const [image, setImage] = useState(backupImage);
 
   const cropperRef = useRef(null);
+  const [cropperKey, setCropperKey] = useState(0);
   const [cropper, setcropper] = useState(null);
   const [cropperPosistion, setCropperPosition] = useState({
     top: null,
@@ -46,6 +48,8 @@ const CropperComponent = () => {
 
   const [rotateLeft, setRotateLeft] = useState(false);
   const [rotateRight, setRotateRight] = useState(false);
+
+  const [ToggleScrollLock, setToggleScrollLock] = useState(false);
 
   const onLoadReader = (file) => {
     const reader = new FileReader();
@@ -77,6 +81,10 @@ const CropperComponent = () => {
     }
   };
 
+  useEffect(() => {
+    setDefaultCropperButton();
+  }, [cropper]);
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     onLoadReader(file);
@@ -94,10 +102,6 @@ const CropperComponent = () => {
       setcropper(null);
     }
   };
-
-  useEffect(() => {
-    setDefaultCropperButton();
-  }, [cropper]);
 
   const onCropperMove = () => {
     const cropper = cropperRef.current?.cropper;
@@ -132,12 +136,12 @@ const CropperComponent = () => {
 
   const handleEnlarge = (event) => {
     event.preventDefault();
-    cropper.zoom(0.2);
+    cropper.zoom(0.1);
   };
 
   const handleCompress = (event) => {
     event.preventDefault();
-    cropper.zoom(-0.2);
+    cropper.zoom(-0.1);
   };
 
   useEffect(() => {
@@ -250,6 +254,14 @@ const CropperComponent = () => {
     setToggleVerticalFlip(false);
   };
 
+  const handleScrollLock = () => {
+    setToggleScrollLock(!ToggleScrollLock);
+  };
+
+  useEffect(() => {
+    setCropperKey((prevKey) => prevKey + 1);
+  }, [ToggleScrollLock]);
+
   return (
     <div className="main-container">
       <div
@@ -267,12 +279,13 @@ const CropperComponent = () => {
             <Cropper
               className="cropper"
               ref={cropperRef}
+              key={cropperKey}
               alt="Cropper"
               src={image}
               ready={setDefaultCropper}
               initialAspectRatio={4 / 5}
               dragMode={dragMode}
-              zoomOnWheel={false}
+              zoomOnWheel={ToggleScrollLock}
               background={false}
               cropBoxResizable={false}
               rotatable={true}
@@ -287,6 +300,7 @@ const CropperComponent = () => {
                   style={{
                     top: `${cropperPosistion.top}px`,
                     left: `${cropperPosistion.left}px`,
+                    width: `${cropperPosistion.width}px`,
                   }}
                 >
                   <button className="crop-button" onClick={handleCrop}>
@@ -317,15 +331,13 @@ const CropperComponent = () => {
                   >
                     <FaSync />
                   </button>
-                </div>
+                  <button
+                    className="scroll-lock-button"
+                    onClick={handleScrollLock}
+                  >
+                    {ToggleScrollLock ? <FaLockOpen /> : <FaLock />}
+                  </button>
 
-                <div
-                  className="cropper-button-second-container"
-                  style={{
-                    top: `${cropperPosistion.top + 5}px`,
-                    left: `${cropperPosistion.left}px`,
-                  }}
-                >
                   <button
                     className="image-enlarge-button"
                     onClick={handleEnlarge}

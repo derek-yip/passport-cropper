@@ -1,7 +1,6 @@
 .dragDrop-area {
   position: relative;
-  min-height: 20rem;
-  height: 40rem;
+  min-height: 50vh;
   border: 2px dashed #ccc;
   display: flex;
   justify-content: center;
