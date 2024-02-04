@@ -284,7 +284,10 @@ const CropperComponent = () => {
       >
         {!image && <h2>Drag and Drop an image here or click to browse</h2>}
         {image && (
-          <div className="cropper-container">
+          <div
+            className="cropper-container"
+            onResize={() => setCropperKey(cropperKey + 1)}
+          >
             <Cropper
               className="cropper"
               ref={cropperRef}
@@ -322,6 +325,8 @@ const CropperComponent = () => {
                     className="rotate-left-button"
                     onMouseDown={handleRotatedLeft}
                     onMouseUp={stopRotated}
+                    onTouchStart={handleRotatedLeft}
+                    onTouchEnd={stopRotated}
                     onMouseLeave={stopRotated}
                   >
                     <FaRedo />
@@ -330,6 +335,8 @@ const CropperComponent = () => {
                     className="rotate-right-button"
                     onMouseDown={handleRotatedRight}
                     onMouseUp={stopRotated}
+                    onTouchStart={handleRotatedRight}
+                    onTouchEnd={stopRotated}
                     onMouseLeave={stopRotated}
                   >
                     <FaRedo />

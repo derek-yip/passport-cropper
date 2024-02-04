@@ -10,7 +10,7 @@ function Header() {
   return (
     <header className="header">
       <nav className="navbar">
-        <p className="title">Derek Yip's Project - Passport Photo Cropper</p>
+        <p className="title">Passport Photo Cropper</p>
         <div className="social-icons">
           <a href={GITHUB_LINK} target="_blank">
             <FaGithub className="icon github-icon" alt="GitHub" />

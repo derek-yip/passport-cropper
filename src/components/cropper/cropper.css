@@ -2,6 +2,7 @@
   position: relative;
   height: 100%;
   max-height: 100%;
+  max-width: 100%;
 }
 
 :is(.cropper-container) .cropper {
@@ -71,7 +72,7 @@
 }
 
 .scroll-lock-button {
-  background-color: #A8F55F;
+  background-color: #a8f55f;
 }
 
 .image-enlarge-button {
@@ -87,7 +88,7 @@
 }
 
 .flip-vertical-button {
-  background-color: #F59FB7;
+  background-color: #f59fb7;
 }
 
 .cropped-flip-button {

@@ -79,3 +79,13 @@
 .flip {
   transform: rotateY(180deg);
 }
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+  .bottom-button-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(auto, auto);
+    grid-gap: 10px;
+  }
+}
