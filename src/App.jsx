@@ -26,7 +26,7 @@ import { IoIosContract, IoIosExpand } from "react-icons/io";
 const CropperComponent = () => {
   const fileInputRef = useRef(null);
 
-  const [backupImage, setbackupImage] = useState("./testing.jpeg");
+  const [backupImage, setbackupImage] = useState("./demo.jpeg");
   const [image, setImage] = useState(backupImage);
 
   const cropperRef = useRef(null);
