@@ -1,0 +1,45 @@
+.header {
+  background-color: #333;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.logo {
+  color: #fff;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.social-icons {
+  margin-top: 10px;
+}
+
+.social-icons a {
+  color: #fff;
+  margin-left: 10px;
+  font-size: 40px;
+}
+
+.social-icons a svg {
+  transition: 0.4s all ease-in;
+}
+
+.github-icon:hover {
+  color: rgb(81, 80, 80);
+}
+
+.linkedIn-icon:hover {
+  color: skyblue;
+}
+
+.heart-icon {
+  color: pink;
+}
+
+.heart-icon:hover {
+  color: crimson;
+}

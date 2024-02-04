@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 
+import Header from "./components/header/header";
+import Footer from "./components/footer/footer";
+
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import "./components/cropper/cropper.css";
@@ -268,6 +271,8 @@ const CropperComponent = () => {
 
   return (
     <div className="main-container">
+      <Header />
+
       <div
         className="dragDrop-area"
         onDragOver={handleDragOver}
@@ -401,6 +406,7 @@ const CropperComponent = () => {
           </>
         )}
       </Modal>
+      <Footer />
     </div>
   );
 };
