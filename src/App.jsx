@@ -256,11 +256,8 @@ const CropperComponent = () => {
 
   const handleScrollLock = () => {
     setToggleScrollLock(!ToggleScrollLock);
+    setCropperKey(cropperKey + 1);
   };
-
-  useEffect(() => {
-    setCropperKey((prevKey) => prevKey + 1);
-  }, [ToggleScrollLock]);
 
   return (
     <div className="main-container">
