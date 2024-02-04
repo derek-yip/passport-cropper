@@ -209,24 +209,31 @@ const CropperComponent = () => {
     downloadLink.click();
   };
 
-  const CovertToPassportPhoto = () => {
+  const CovertToPassportPhoto = (format) => {
+    var layout = format.layout;
+    var x = format.x;
+    var y = format.y;
+
+    var defaultWidth = layout == "TWO_TWO" ? 2100 : 3000;
+    var defaultHight = 2100;
+
     // Calculate the width and height of each image piece
-    var pieceWidth = 3000 / 4;
-    var pieceHeight = 2100 / 2;
+    var pieceWidth = defaultWidth / x;
+    var pieceHeight = defaultHight / y;
 
     // Create a new canvas element
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
 
     // Set the canvas dimensions to match the layout of the images
-    canvas.width = pieceWidth * 4;
-    canvas.height = pieceHeight * 2;
+    canvas.width = pieceWidth * x;
+    canvas.height = pieceHeight * y;
     // Loop through the images and draw them on the canvas
-    for (var y = 0; y < 2; y++) {
-      for (var x = 0; x < 4; x++) {
+    for (var i = 0; i < y; i++) {
+      for (var j = 0; j < x; j++) {
         // Draw the image on the canvas
-        var xPos = x * pieceWidth;
-        var yPos = y * pieceHeight;
+        var xPos = j * pieceWidth;
+        var yPos = i * pieceHeight;
         context.drawImage(UnconvertData, xPos, yPos, pieceWidth, pieceHeight);
       }
     }
@@ -367,10 +374,10 @@ const CropperComponent = () => {
       </div>
 
       <input
+        className="FileInputer"
         type="file"
         accept="image/*"
         onChange={handleImageUpload}
-        style={{ display: "none" }}
         ref={fileInputRef}
       />
 
@@ -379,8 +386,9 @@ const CropperComponent = () => {
         heading={`Preview`}
         showBottom={true}
         setClose={() => setModalOpen(false)}
+        handleCrop={() => handleCrop()}
         handleDownload={() => handleDownload()}
-        CovertToPassportPhoto={() => CovertToPassportPhoto()}
+        CovertToPassportPhoto={(format) => CovertToPassportPhoto(format)}
       >
         {cropData && (
           <>

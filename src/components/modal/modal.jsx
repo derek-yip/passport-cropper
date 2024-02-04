@@ -3,8 +3,10 @@ import "./modal.css";
 import {
   FaRegWindowClose,
   FaCloudDownloadAlt,
-  FaGrin,
+  FaCameraRetro,
 } from "react-icons/fa";
+
+import LayoutFormats from "../../assets/layoutFormat";
 
 function Modal(props) {
   if (!props.isOpen) {
@@ -26,8 +28,29 @@ function Modal(props) {
             <button onClick={props.handleDownload}>
               <FaCloudDownloadAlt />
             </button>
-            <button onClick={props.CovertToPassportPhoto}>
-              <FaGrin />
+            <button
+              onClick={() => props.handleCrop()}
+            >
+              <FaCameraRetro />
+            </button>
+            <button
+              onClick={() =>
+                props.CovertToPassportPhoto(LayoutFormats.FOUR_TWO)
+              }
+            >
+              4x4
+            </button>
+            <button
+              onClick={() =>
+                props.CovertToPassportPhoto(LayoutFormats.THREE_TWO)
+              }
+            >
+              3x2
+            </button>
+            <button
+              onClick={() => props.CovertToPassportPhoto(LayoutFormats.TWO_TWO)}
+            >
+              2x2
             </button>
           </div>
         )}
