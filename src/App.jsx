@@ -217,8 +217,13 @@ const CropperComponent = () => {
     var x = format.x;
     var y = format.y;
 
-    var defaultWidth = layout == "TWO_TWO" ? 2100 : 3000;
+    var defaultWidth = 3000;
     var defaultHight = 2100;
+
+    if (layout == "TWO_TWO") {
+      defaultWidth = 2100;
+      defaultHight = 2100;
+    }
 
     // Calculate the width and height of each image piece
     var pieceWidth = defaultWidth / x;
@@ -395,23 +400,13 @@ const CropperComponent = () => {
 
       <Modal
         isOpen={modalOpen}
-        heading={`Preview`}
         showBottom={true}
         setClose={() => setModalOpen(false)}
         handleCrop={() => handleCrop()}
         handleDownload={() => handleDownload()}
         CovertToPassportPhoto={(format) => CovertToPassportPhoto(format)}
+        cropData={cropData}
       >
-        {cropData && (
-          <>
-            <img
-              className="modal-image-preview"
-              src={cropData}
-              alt="Modal Image"
-            />
-            <div id="previewContainer"></div>
-          </>
-        )}
       </Modal>
       <Footer />
     </div>
