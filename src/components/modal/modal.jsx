@@ -17,9 +17,9 @@ function Modal(props) {
 
   const CovertToPassportPhoto = (layout) => {
     props.CovertToPassportPhoto(layout);
-    if (layout === LayoutFormats.FOUR_TWO) setAspectRatio("4 / 2");
-    else if (layout === LayoutFormats.THREE_TWO) setAspectRatio("3 / 2");
-    else if (layout === LayoutFormats.TWO_TWO) setAspectRatio("1 / 1");
+    if (layout === LayoutFormats.FOUR_TWO) setAspectRatio(`${4 * 4} / ${2 * 5}`);
+    else if (layout === LayoutFormats.THREE_TWO) setAspectRatio(`${3 * 4} / ${2 * 5}`);
+    else if (layout === LayoutFormats.TWO_TWO) setAspectRatio(`${2 * 4} / ${2 * 5}`);
     else {
       setAspectRatio("4 / 5")
       props.handleCrop()

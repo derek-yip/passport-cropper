@@ -406,8 +406,8 @@ const CropperComponent = () => {
         handleDownload={() => handleDownload()}
         CovertToPassportPhoto={(format) => CovertToPassportPhoto(format)}
         cropData={cropData}
-      >
-      </Modal>
+      />
+      
       <Footer />
     </div>
   );
