@@ -102,4 +102,10 @@
     grid-auto-rows: auto;
     grid-gap: 10px;
   }
+  .modal-content-inner{
+    height: 75%;
+  }
+  .modal-image-preview{
+    object-fit: contain;
+  }
 }
