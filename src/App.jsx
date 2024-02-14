@@ -214,34 +214,49 @@ const CropperComponent = () => {
 
   const CovertToPassportPhoto = (format) => {
     var layout = format.layout;
-    var x = format.x;
-    var y = format.y;
+    var rows = format.rows;
+    var cols = format.cols;
 
-    var defaultWidth = 3000;
-    var defaultHight = 2100;
+    var photoWidth = 2100;
+    var photoHeight = 1500;
 
-    if (layout == "TWO_TWO") {
-      defaultWidth = 2100;
-      defaultHight = 2100;
+    var aspectRatio = 4 / 5; // Desired aspect ratio of each photo piece
+
+    // Calculate the piece height based on the available height
+    var pieceHeight = photoHeight / rows;
+
+    // Calculate the piece width based on the piece height and aspect ratio
+    let pieceWidth = pieceHeight * aspectRatio;
+
+    // Check if the calculated width exceeds the available width
+    if (pieceWidth * cols > photoWidth) {
+      pieceWidth = photoWidth / cols;
     }
 
-    // Calculate the width and height of each image piece
-    var pieceWidth = defaultWidth / x;
-    var pieceHeight = defaultHight / y;
+    // Calculate the remaining width and height
+    var remainingWidth = photoWidth - pieceWidth * cols;
+    var remainingHeight = photoHeight - pieceHeight * rows;
+
+    // Calculate the horizontal and vertical offsets to center the pieces
+    var xOffset = remainingWidth / 2;
+    var yOffset = remainingHeight / 2;
 
     // Create a new canvas element
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
 
     // Set the canvas dimensions to match the layout of the images
-    canvas.width = pieceWidth * x;
-    canvas.height = pieceHeight * y;
+    canvas.width = photoWidth;
+    canvas.height = photoHeight;
+
     // Loop through the images and draw them on the canvas
-    for (var i = 0; i < y; i++) {
-      for (var j = 0; j < x; j++) {
+    for (var i = 0; i < rows; i++) {
+      for (var j = 0; j < cols; j++) {
+        // Calculate the position of each photo piece with center alignment
+        var xPos = xOffset + j * pieceWidth;
+        var yPos = yOffset + i * pieceHeight;
+
         // Draw the image on the canvas
-        var xPos = j * pieceWidth;
-        var yPos = i * pieceHeight;
         context.drawImage(UnconvertData, xPos, yPos, pieceWidth, pieceHeight);
       }
     }
@@ -407,7 +422,7 @@ const CropperComponent = () => {
         CovertToPassportPhoto={(format) => CovertToPassportPhoto(format)}
         cropData={cropData}
       />
-      
+
       <Footer />
     </div>
   );
