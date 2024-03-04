@@ -120,7 +120,7 @@ const CropperComponent = () => {
     setCrop(true);
     if (cropper) {
       var croppedCanvas = cropper.getCroppedCanvas();
-
+      
       setCropData(croppedCanvas.toDataURL());
       setUnconvertData(croppedCanvas);
       setModalOpen(true);
@@ -238,16 +238,19 @@ const CropperComponent = () => {
     var remainingHeight = photoHeight - pieceHeight * rows;
 
     // Calculate the horizontal and vertical offsets to center the pieces
-    var xOffset = remainingWidth / 2;
-    var yOffset = remainingHeight / 2;
+    // var xOffset = remainingWidth / 2;
+    // var yOffset = remainingHeight / 2;
+
+    var xOffset = 0;
+    var yOffset = 0;
 
     // Create a new canvas element
     var canvas = document.createElement("canvas");
     var context = canvas.getContext("2d");
 
     // Set the canvas dimensions to match the layout of the images
-    canvas.width = photoWidth;
-    canvas.height = photoHeight;
+    canvas.width = photoWidth - remainingWidth;
+    canvas.height = photoHeight - remainingHeight;
 
     // Loop through the images and draw them on the canvas
     for (var i = 0; i < rows; i++) {

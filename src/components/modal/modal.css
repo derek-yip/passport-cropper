@@ -84,7 +84,7 @@
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 4 / 5;
-  object-fit: cover;
+  object-fit: contain;
 }
 .bottom-button-container {
   display: grid;
@@ -105,8 +105,5 @@
   }
   .modal-content-inner{
     height: 75%;
-  }
-  .modal-image-preview{
-    object-fit: contain;
   }
 }

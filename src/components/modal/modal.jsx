@@ -43,7 +43,6 @@ function Modal(props) {
                 src={props.cropData}
                 alt="Modal Image"
               />
-              <div id="previewContainer"></div>
             </>
           )}
         </div>
