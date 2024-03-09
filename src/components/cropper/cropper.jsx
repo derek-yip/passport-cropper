@@ -58,10 +58,10 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
       const cropperPosistion = cropper.cropBoxData;
 
       setCropperPosition({
-        top: Math.floor(cropperPosistion.top),
-        left: Math.floor(cropperPosistion.left),
-        height: Math.floor(cropperPosistion.height),
-        width: Math.floor(cropperPosistion.width),
+        top: Math.floor(cropperPosistion?.top),
+        left: Math.floor(cropperPosistion?.left),
+        height: Math.floor(cropperPosistion?.height),
+        width: Math.floor(cropperPosistion?.width),
       });
     }
   };
@@ -75,10 +75,10 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
     const cropperPosistion = cropper.getCropBoxData();
 
     setCropperPosition({
-      top: Math.floor(cropperPosistion.top),
-      left: Math.floor(cropperPosistion.left),
-      height: Math.floor(cropperPosistion.height),
-      width: Math.floor(cropperPosistion.width),
+      top: Math.floor(cropperPosistion?.top),
+      left: Math.floor(cropperPosistion?.left),
+      height: Math.floor(cropperPosistion?.height),
+      width: Math.floor(cropperPosistion?.width),
     });
   };
 
@@ -190,10 +190,7 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
   };
 
   return (
-    <div
-      className="cropper-container"
-      onResize={() => setCropperKey(cropperKey + 1)}
-    >
+    <div className="cropper-container">
       <Cropper
         className="cropper"
         ref={ref}
