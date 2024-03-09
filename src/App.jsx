@@ -118,9 +118,6 @@ const CropperComponent = () => {
     setCropData(canvas.toDataURL());
   };
 
-  const handleCrop = ()=>{
-    // console.log(cropperRef.current);
-  }
   return (
     <div className="main-container">
       <Header />

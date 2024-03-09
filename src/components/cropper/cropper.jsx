@@ -30,7 +30,6 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
   const [backupImage, setbackupImage] = useState("./demo.jpeg");
   const [image, setImage] = useState(backupImage);
 
-
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
 

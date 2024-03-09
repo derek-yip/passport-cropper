@@ -103,7 +103,7 @@
     grid-auto-rows: auto;
     grid-gap: 10px;
   }
-  .modal-content-inner{
+  .modal-content-inner {
     height: 75%;
   }
 }

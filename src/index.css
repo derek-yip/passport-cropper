@@ -1,4 +1,4 @@
-*{
+* {
   margin: 0;
   box-sizing: border-box;
 }
@@ -11,7 +11,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #333;
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,24 +52,23 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-.main-container{
+.main-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-
-.photoAttachContainer{
+.photoAttachContainer {
   position: relative;
 }
 
-.upload-file-container{
+.upload-file-container {
   position: relative;
   height: 40px;
   width: 20%;
 }
 
-form{
+form {
   display: flex;
   max-width: 100%;
   gap: 10px;
