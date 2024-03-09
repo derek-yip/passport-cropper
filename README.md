@@ -23,6 +23,8 @@ The Passport Photo Cropper is a user-friendly and efficient online tool designed
 5. Click "Download" icon to download the photo into local machine
 6. Say goodbye to the complexities of traditional photo editing software and enjoy the convenience of the Passport Photo Cropper.
 
+## For Developer
+- External Package using react-cropper base on cropper.js by fengyuanchen ([Documentation Link](https://github.com/fengyuanchen/cropperjs) )
 
 ## License
 
