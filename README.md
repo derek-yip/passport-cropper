@@ -27,7 +27,7 @@ The Passport Photo Cropper is a user-friendly and efficient online tool designed
 > [!NOTE]
 > External Package using react-cropper base on cropper.js by fengyuanchen ([Documentation Link](https://github.com/fengyuanchen/cropperjs) )
 
-> [!TIP]
+> [!IMPORTANT]
 > Add the .env file's variables
   ```
     VITE_REACT_GITHUB_LINK = ""
