@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
@@ -30,12 +30,9 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
   const [backupImage, setbackupImage] = useState("./demo.jpeg");
   const [image, setImage] = useState(backupImage);
 
-  const [modalOpen, setModalOpen] = useState(false);
 
   const [dragMode, setDragMode] = useState("none");
   const [crop, setCrop] = useState(false);
-  const [cropData, setCropData] = useState(null);
-  const [UnconvertData, setUnconvertData] = useState(null);
 
   const [ToggleHorizontalFlip, setToggleHorizontalFlip] = useState(false);
   const [ToggleVerticalFlip, setToggleVerticalFlip] = useState(false);
@@ -87,10 +84,6 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
       props.setModalOpen(true);
     }
   };
-
-  useEffect(() => {
-    props.setImage(image);
-  }, [image]);
 
   const handleRotatedLeft = (event) => {
     event.preventDefault();
@@ -198,7 +191,7 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
         ref={ref}
         key={cropperKey}
         alt="Cropper"
-        src={image}
+        src={props.image}
         ready={setDefaultCropper}
         initialAspectRatio={4 / 5}
         dragMode={dragMode}

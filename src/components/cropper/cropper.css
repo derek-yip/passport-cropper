@@ -94,3 +94,10 @@
 .cropped-flip-button {
   background-color: rgb(92, 162, 247);
 }
+
+/* Mobile-specific styles */
+@media (max-width: 767px) {
+  .scroll-lock-button {
+    display: none;
+  }
+}
