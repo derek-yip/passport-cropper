@@ -23,9 +23,17 @@ The Passport Photo Cropper is a user-friendly and efficient online tool designed
 5. Click "Download" icon to download the photo into local machine
 6. Say goodbye to the complexities of traditional photo editing software and enjoy the convenience of the Passport Photo Cropper.
 
-## For Developer
-- External Package using react-cropper base on cropper.js by fengyuanchen ([Documentation Link](https://github.com/fengyuanchen/cropperjs) )
+## Developer Reminder
+> [!NOTE]
+> External Package using react-cropper base on cropper.js by fengyuanchen ([Documentation Link](https://github.com/fengyuanchen/cropperjs) )
 
+> [!TIP]
+> Add the .env file's variables
+  ```
+    VITE_REACT_GITHUB_LINK = ""
+    VITE_REACT_LINKEDIN_LINK= ""
+    VITE_REACT_PAYME_LINK = ""
+  ```
 ## License
 
 The Passport Photo Cropper is available under the [MIT license](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute the tool according to the terms of the license.
