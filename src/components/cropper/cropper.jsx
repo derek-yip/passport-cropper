@@ -41,6 +41,13 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
 
   const [ToggleScrollLock, setToggleScrollLock] = useState(false);
 
+  window.addEventListener("resize", () => {
+    if (cropper) {
+      cropper.reset();
+      onCropperMove();
+    }
+  });
+
   const setDefaultCropper = () => {
     setcropper(ref.current?.cropper);
     setDefaultCropperButton();
@@ -70,6 +77,8 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
     setCropperPosition({
       top: Math.floor(cropperPosistion.top),
       left: Math.floor(cropperPosistion.left),
+      height: Math.floor(cropperPosistion.height),
+      width: Math.floor(cropperPosistion.width),
     });
   };
 
