@@ -22,6 +22,12 @@ The Passport Photo Cropper is a user-friendly and efficient online tool designed
 4. Select the layout of photo for preview
 5. Click "Download" icon to download the photo into local machine
 6. Say goodbye to the complexities of traditional photo editing software and enjoy the convenience of the Passport Photo Cropper.
+## Demo
+![image](https://github.com/derek-yip/passport-cropper/assets/101183496/799d0f0f-bdf9-4c18-a240-2083ae61fde5)
+![image](https://github.com/derek-yip/passport-cropper/assets/101183496/f1fd7493-d901-4dd6-bcee-fe0c97c9331d)
+![image](https://github.com/derek-yip/passport-cropper/assets/101183496/c3bbe615-83a6-4332-a07f-e80d94f353b1)
+![image](https://github.com/derek-yip/passport-cropper/assets/101183496/e7ac940a-11f9-4631-9d86-9e1f9eaef5e4)
+![image](https://github.com/derek-yip/passport-cropper/assets/101183496/23f0b20d-9dcd-40c0-b6db-0cb284a6501f)
 
 ## Developer Reminder
 > [!NOTE]
