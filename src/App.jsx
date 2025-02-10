@@ -55,7 +55,8 @@ const CropperComponent = () => {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = (event) => {
+    event.preventDefault()
     const downloadLink = document.createElement("a");
     downloadLink.href = cropData;
     downloadLink.download = "cropped_image.png";
