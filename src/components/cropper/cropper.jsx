@@ -70,6 +70,10 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
     setDefaultCropperButton();
   }, [cropper]);
 
+  useEffect(() => {
+    setCropperKey(cropperKey + 1);
+  }, [cropper?.url]);
+
   const onCropperMove = () => {
     const cropper = ref.current?.cropper;
     const cropperPosistion = cropper.getCropBoxData();
@@ -198,7 +202,7 @@ const Cropper_ = forwardRef(function Cropper_(props, ref) {
         alt="Cropper"
         src={props.image}
         ready={setDefaultCropper}
-        initialAspectRatio={4 / 5}
+        initialAspectRatio={3 / 4}
         dragMode={dragMode}
         zoomOnWheel={ToggleScrollLock}
         background={false}

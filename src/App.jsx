@@ -43,7 +43,9 @@ const CropperComponent = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
+
     onLoadReader(file);
+
     if (cropper) {
       setcropper(null);
     }
@@ -56,7 +58,7 @@ const CropperComponent = () => {
   };
 
   const handleDownload = (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     const downloadLink = document.createElement("a");
     downloadLink.href = cropData;
     downloadLink.download = "cropped_image.png";
